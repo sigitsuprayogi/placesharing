@@ -1,0 +1,14 @@
+<ul>
+	<%
+	number = 1
+	@list_user.each do |data| 
+	%>
+		<li><%= link_to '/@'+data['initial_name'], method: :get, style:'text-decoration:none;' do data['actual_name'] + ' @' +data['initial_name'] end %></li>
+	<%
+	number+= 1
+	end
+
+	if number == 1 %>
+		<li>User not found</li>
+	<% end %>
+</ul>

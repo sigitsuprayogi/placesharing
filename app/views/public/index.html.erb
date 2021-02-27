@@ -1,0 +1,79 @@
+<div style="margin-top: 15%; margin-left: 28%;">
+    <input onkeyup="search_users(event)" class="form-control mr-sm-2" type="search" placeholder="Search users" aria-label="Search" style="width: 700px;">
+    <div id='users_list' style="position:absolute;"></div>
+    <div style="margin-left: 565px;margin-top: 10px;">
+        <a href="javascript:void(0);" class="btn btn-primary btn-sm" style="margin-right: 10px;" data-toggle="modal" data-target="#login">Login</a>
+        <a href="javascript:void(0);" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#register">Register</a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function check_password() {
+        if (document.getElementById('password').value ==
+                document.getElementById('confirm_password').value) {
+            document.getElementById('submit').disabled = false;
+        } else {
+            document.getElementById('submit').disabled = true;
+        }
+    }
+</script>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="H3">Login account</h4>
+            </div>
+            <%= form_tag("/login", id: "formlogin") do %>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Username <span style="color: red;">*</span></label>
+                        <input class="form-control" type="text" name="l_username" required="required" maxlength="50"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span style="color: red;">*</span></label>
+                        <input class="form-control" type="password" name="l_password" required="required" maxlength="50"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Login">
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="H3">Register now. <span style="font-size: 34px; color: red;"><b>its free</b></span></h4>
+            </div>
+            <%= form_tag("/register", id: "formregister", remote: true) do %>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Username <span style="color: red;">*</span></label>
+                        <input class="form-control" type="text" name="r_username" required="required" maxlength="50"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Fullname <span style="color: red;">*</span></label>
+                        <input class="form-control" type="text" name="r_fullname" required="required" maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span style="color: red;">*</span></label>
+                        <input class="form-control" type="password" id="password" onchange="check_password();"  name="r_password" required="required" maxlength="50"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm password <span style="color: red;">*</span></label>
+                        <input class="form-control" type="password" id="confirm_password" onchange="check_password();" name="r_confirmpassword" required="required" maxlength="50"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Register" id="submit" disabled="disabled">
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

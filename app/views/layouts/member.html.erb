@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @title %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+ 
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <style type="text/css">
+  .dropdown {
+    display: inline-block;
+    right:20%; 
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-content a:hover {background-color: #ddd}
+  .show {display:block;} 
+  
+  </style>
+  <script type="text/javascript">
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  function search_users(keyEvent){
+    keyEvent = (keyEvent) ? keyEvent: window.event;
+    input = (keyEvent.target) ? keyEvent.target: keyEvent.srcElement;
+    if (keyEvent.type == "keyup"){
+      var targetDiv = document.getElementById("users_list");
+      targetDiv.innerHTML = "<div></div>";
+      if (input.value){
+        getData("/search?query=" + input.value);
+      }
+    } 
+  }
+  function getData(dataSource) {
+    var ajaxRequest;
+    ajaxRequest = new XMLHttpRequest();
+    if (ajaxRequest){
+      ajaxRequest.open("GET",dataSource);
+      ajaxRequest.onreadystatechange = 
+      function(){
+        if (ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+          var targetDiv = document.getElementById("users_list");
+          targetDiv.innerHTML = ajaxRequest.responseText;
+        }
+      }
+      ajaxRequest.send(null);
+    }
+  } 
+  </script>
+  </head>
+ 
+  <body>
+    <div class="dropdown" style="float: right; margin-top: -15%; margin-right: 20px;">
+      <a href="javascript:void(0)" onclick="myFunction()" class="dropbtn"><%= session[:session_fullname].sub(/^(\w)/) {|s| s.capitalize} %></a>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="/@<%= session[:session_username] %>">Home</a>
+        <a href="/@<%= session[:session_username] %>/activity">My Activity</a>
+        <a href="/@<%= session[:session_username] %>/logout">Logout</a>
+      </div>
+    </div> 
+    <%= yield %>
+  </body>
+</html>
